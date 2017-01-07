@@ -1,25 +1,51 @@
 module Main exposing (..)
 
-import Html exposing (Html)
+import Html exposing (..)
+import Html.Events exposing (onInput)
+import Html.Attributes exposing (style)
+import Dict
 
-type Msg = NoOp
+import Http
 
-type alias Model = 
-    {}
+import AboutMe exposing (viewAboutMe)
+import Translation exposing (..)
+import Github exposing (getRepos)
+
+import Model exposing (..)
+import Update exposing (..)
 
 
-update : Msg -> Model -> (Model, Cmd Msg)
-update msg model = 
-    case msg of
-        NoOp -> (model, Cmd.none)
+
+viewLanguageChoice : String -> Html Msg 
+viewLanguageChoice language =
+    option 
+        [] 
+        [ text language ]
+
+viewChooseLanguage : Model -> Html Msg
+viewChooseLanguage model =
+    select [ onInput ChangeLanguage ] (List.map viewLanguageChoice languageKeys)  
+
 
 init : (Model, Cmd Msg) 
 init =
-    ({}, Cmd.none)
+    ( {language = "English", repos = [], templates = Dict.empty }
+    , Http.send (loadRequest (LoadRepos 1)) (getRepos "eeue56" 1)
+    )
+
+viewRepos : Model -> Html Msg
+viewRepos model = 
+    List.length model.repos
+        |> toString
+        |> text
 
 view : Model -> Html Msg
 view model =
-    Html.text "hello"
+    div 
+        []
+        [ viewChooseLanguage model 
+        , viewAboutMe model.templates model.language
+        ]
 
 
 main = 
