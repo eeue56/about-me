@@ -1,10 +1,37 @@
 module Github exposing (..)
 
 
+import Dict exposing (Dict)
 import Http
 import HttpBuilder exposing (..)
 import Json.Decode as Decode exposing (Decoder)
 import Json.Decode.Pipeline exposing (..)
+
+import Translation exposing (Translation)
+
+nameTranslations : Translation
+nameTranslations =
+    { en = "Name"
+    , sv = "Namn"
+    , no = "Navn"
+    , we = "Enw"
+    }
+
+stargazersTranslations : Translation
+stargazersTranslations =
+    { en = "Stargazers"
+    , sv = "Stargazers"
+    , no = "Stargazers"
+    , we = "Stargazers"
+    }
+
+languageTranslations : Translation
+languageTranslations =
+    { en = "Language"
+    , sv = "Språk"
+    , no = "Språk"
+    , we = "Iaith"
+    }
 
 
 getRepos : String -> Int -> Http.Request (List Repo)
@@ -15,10 +42,30 @@ getRepos username pageNumber =
     |> toRequest
 
 
+incrementLanguage : Maybe number -> Maybe number
+incrementLanguage maybeLang = 
+    case maybeLang of 
+        Nothing -> Just 1
+        Just v -> Just (v + 1)
+
+countLanguages : List Repo -> Dict String Int
+countLanguages =
+    List.map .language 
+        >> List.foldl (\language dict -> Dict.update language incrementLanguage dict) Dict.empty
+
+languageBreakdown : Dict String Int -> String
+languageBreakdown dict =
+    Dict.toList dict
+        |> List.sortBy Tuple.second
+        |> List.reverse
+        |> List.map (\(k, v) -> k ++ ":" ++ (toString v))
+        |> String.join ","
+
+
+
 type alias Repo = 
     { name : String
     , stargazersCount : Int
-    , watchersCount : Int
     , language : String
     }
 
@@ -27,7 +74,6 @@ decodeRepo =
     decode Repo 
         |> optional "name" Decode.string "None"
         |> optional "stargazers_count" Decode.int 0
-        |> optional "watchers_count" Decode.int 0
         |> optional "language" Decode.string "None"
 
 decodeFilterList : Decoder a -> Decoder (List a)
@@ -41,3 +87,5 @@ decodeFilterList decoder =
 decodeRepos : Decoder (List Repo)
 decodeRepos =
     decodeFilterList decodeRepo
+
+

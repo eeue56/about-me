@@ -31,13 +31,21 @@ update msg model =
 
                 joinedRepos = 
                     List.concat [ model.repos, repos ]
+
+                countLanguages =
+                    Github.countLanguages joinedRepos 
             in
                 ( 
                     { model 
                     | repos = joinedRepos
                     , templates = 
                         model.templates
-                            |> Dict.insert "repos" (toString <| List.length joinedRepos) 
+                            |> Dict.insert "repos" 
+                                (toString <| List.length joinedRepos) 
+                            |> Dict.insert "languagesCount" 
+                                (toString <| List.length <| Dict.keys <| countLanguages)
+                            |> Dict.insert "languageBreakdown"
+                                (Github.languageBreakdown countLanguages)
                     }
                 , nextPage
                 )

@@ -15,7 +15,7 @@ me : String
 me = """
 
 I'm a programmer who loves open source and challenging problems. 
-I also like languages! I have {repos} repos on Github.
+I also like languages! I have {repos} repos in {languagesCount} languages on Github. 
 
 """
 
@@ -23,16 +23,16 @@ I also like languages! I have {repos} repos on Github.
 jag : String 
 jag = """
 
-Jag är en programmerer som älskar open source och problemer svårt. 
-Jag ochså älskar språk! Jar har {repos} repos på Github.
+Jag är en programmerer som älskar open source och svåra problemer. 
+Jag älskar ochså språk! Jar har {repos} repos på {languagesCount} språk i Github.
 
 """
 
 jeg : String 
 jeg = """
 
-Jeg er en programmer som elsker open source och programmer hard.
-Jeg ogsa elsker språk! Jeg har {repos} repos på Github.
+Jeg er en programmer som elsker open source og vanskelige problemer.
+Jeg elsker ogsa språk! Jeg har {repos} repos på {languagesCount} språk i Github.
 
 """
 
@@ -40,7 +40,7 @@ fi : String
 fi = """
 
 Rwyn person sydd caru open source ac problemiau galed.
-Rwyn caru iaith hefyd! Mae gen i {repos} ar Github.
+Rwyn caru iaith hefyd! Mae gen i {repos} mewn {languagesCount} iaith ar Github.
 
 """
 
