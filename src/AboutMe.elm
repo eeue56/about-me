@@ -39,7 +39,7 @@ Jeg elsker ogsa språk! Jeg har {repos} repos på {languagesCount} språk i Gith
 fi : String
 fi = """
 
-Rwyn person sydd caru open source ac problemiau galed.
+Rydw i'n person sydd caru open source ac problemiau galed.
 Rwyn caru iaith hefyd! Mae gen i {repos} mewn {languagesCount} iaith ar Github.
 
 """
@@ -50,3 +50,4 @@ viewAboutMe templates language =
     Translation.getTranslation language translations
         |> Translation.insertTemplateString templates
         |> Html.text
+
