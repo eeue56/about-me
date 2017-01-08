@@ -4,6 +4,7 @@ module Github exposing (..)
 import Dict exposing (Dict)
 import Http
 import HttpBuilder exposing (..)
+import Json.Encode as Encode
 import Json.Decode as Decode exposing (Decoder)
 import Json.Decode.Pipeline exposing (..)
 
@@ -75,6 +76,15 @@ decodeRepo =
         |> optional "name" Decode.string "None"
         |> optional "stargazers_count" Decode.int 0
         |> optional "language" Decode.string "None"
+
+
+encodeRepo : Repo -> Encode.Value
+encodeRepo repo =
+    Encode.object 
+        [ ( "name", Encode.string repo.name )
+        , ( "stargazers_count", Encode.int repo.stargazersCount )
+        , ( "language", Encode.string repo.language)
+        ]
 
 decodeFilterList : Decoder a -> Decoder (List a)
 decodeFilterList decoder =

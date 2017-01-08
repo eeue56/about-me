@@ -15,14 +15,17 @@ import View exposing (..)
 init : (Model, Cmd Msg) 
 init =
     ( { language = "English", repos = [], templates = Dict.empty }
-    , Http.send (loadRequest (LoadRepos 1)) (getRepos "eeue56" 1)
+    , Cmd.batch 
+        [ Http.send (loadRequest (LoadRepos 1)) (getRepos "eeue56" 1)
+        , loadModel 
+        ]
     )
 
 main : Program Never Model Msg
 main = 
     Html.program 
         { init = init 
-        , update = update
+        , update = (\msg model -> update msg model |> alwaysSaveModel)
         , view = view
         , subscriptions = (\_ -> Sub.none)
         }
