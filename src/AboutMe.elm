@@ -50,4 +50,5 @@ viewAboutMe templates language =
     Translation.getTranslation language translations
         |> Translation.insertTemplateString templates
         |> Html.text
+        |> (\text -> Html.p [] [ text ])
 

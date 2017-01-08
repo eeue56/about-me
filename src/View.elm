@@ -9,7 +9,10 @@ import Html.Attributes exposing (style)
 
 import Github
 import AboutMe exposing (viewAboutMe)
+import FavouriteProjects exposing (viewFavouriteProjects, projectsWithMaybeRepos)
 import Translation exposing (..)
+import ViewCss exposing (viewStyle, CssClass(..), namespacedCss)
+
 
 viewRepo : Github.Repo -> Html Msg 
 viewRepo repo = 
@@ -46,19 +49,22 @@ viewRepos model =
 viewLanguageChoice : String -> Html Msg 
 viewLanguageChoice language =
     option 
-        [] 
+        [ ] 
         [ text language ]
 
 viewChooseLanguage : Model -> Html Msg
 viewChooseLanguage model =
-    select [ onInput ChangeLanguage ] (List.map viewLanguageChoice languageKeys)  
+    List.map viewLanguageChoice languageKeys
+        |> select [ onInput ChangeLanguage, namespacedCss.class [ LanguageSelect ] ] 
 
 
 view : Model -> Html Msg
 view model =
     div 
-        []
-        [ viewChooseLanguage model 
+        [ namespacedCss.class [ Main ] ]
+        [ ViewCss.viewStyle
+        , viewChooseLanguage model 
         , viewAboutMe model.templates model.language
-        , viewRepos model
+        , viewFavouriteProjects model.language (projectsWithMaybeRepos model.repos FavouriteProjects.allProjects)
         ]
+

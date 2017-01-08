@@ -42,6 +42,13 @@ getRepos username pageNumber =
     |> withExpect (Http.expectJson decodeRepos) 
     |> toRequest
 
+getOneRepo : String -> String -> Http.Request Repo
+getOneRepo username projectName = 
+  "https://api.github.com/repos/" ++ username ++ "/" ++ projectName
+    |> get
+    |> withExpect (Http.expectJson decodeRepo) 
+    |> toRequest
+
 
 incrementLanguage : Maybe number -> Maybe number
 incrementLanguage maybeLang = 
@@ -66,6 +73,7 @@ languageBreakdown dict =
 
 type alias Repo = 
     { name : String
+    , owner : String 
     , stargazersCount : Int
     , language : String
     }
@@ -74,6 +82,7 @@ decodeRepo : Decoder Repo
 decodeRepo =
     decode Repo 
         |> optional "name" Decode.string "None"
+        |> optional "owner" (Decode.at [ "login" ] Decode.string) "eeue56"
         |> optional "stargazers_count" Decode.int 0
         |> optional "language" Decode.string "None"
 
@@ -82,6 +91,7 @@ encodeRepo : Repo -> Encode.Value
 encodeRepo repo =
     Encode.object 
         [ ( "name", Encode.string repo.name )
+        , ( "owner", Encode.string repo.owner )
         , ( "stargazers_count", Encode.int repo.stargazersCount )
         , ( "language", Encode.string repo.language)
         ]

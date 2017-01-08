@@ -13,6 +13,7 @@ type Msg
     | ChangeLanguage String
     | LoadRepos Int (List Repo)
     | LoadModel Model 
+    | LoadRepo Repo
 
 update : Msg -> Model -> (Model, Cmd Msg)
 update msg model = 
@@ -24,6 +25,14 @@ update msg model =
 
         LoadRepos pageNumber repos ->
             loadRepos model pageNumber repos
+
+        LoadRepo repo ->
+            let
+                (newModel, _) =
+                    loadRepos model 0 [ repo ]
+            in
+                ( newModel, Cmd.none )
+
         LoadModel newModel ->
             ( newModel, Cmd.none )
 
@@ -54,9 +63,7 @@ loadRepos model pageNumber repos =
             List.map .name repos 
 
         joinedRepos = 
-            model.repos 
-                |> List.filter (\repo -> List.member repo.name names)
-                |> (++) repos
+            addAndReplaceRepos model.repos repos
 
         countLanguages =
             Github.countLanguages joinedRepos 
@@ -75,6 +82,27 @@ loadRepos model pageNumber repos =
             }
         , nextPage
         )
+
+{-|
+    Takes a list of repos we already got, then a list of new repos,
+    returns a list of the two joined - with any repos with the same name replaced by the second 
+    occurance
+
+    >>> addAndReplaceRepos [ {name = "hello", stargazersCount = 2, language="none"}] [ {name = "hello", stargazersCount = 2, language="some"}]
+    [ {name = "hello", stargazersCount = 2, language="some"} ]
+-}
+addAndReplaceRepos : List Repo -> List Repo -> List Repo 
+addAndReplaceRepos original new =
+    let
+        newNames = 
+            List.map .name new
+
+        originalWithThoseInNew = 
+            original
+                |> List.filter (\repo -> not <| List.member repo.name newNames)
+    in
+        originalWithThoseInNew ++ new
+
 
 saveModel : Model -> Cmd Msg 
 saveModel model = 
