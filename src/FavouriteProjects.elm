@@ -124,8 +124,8 @@ It has a lot of cool features, like server-side-rendering, CSS in Elm, server-cl
 and seemless interop between client and server.
 """
         , sv = """
-Den varld's enst full-stack Elm projekt!
-Det har flera coolst saker som server-side-rendering, CSS i Elm, server-client delad types och interop mellan client och server.
+Världens ända full-stack Elm projekt!
+Det har flera coola saker som server-side-rendering, CSS i Elm, server-client delade types och interop mellan client och server.
 """
         , no = """
 Vårld enst full-stack Elm prosjekt!
@@ -154,10 +154,11 @@ It will then use those arguments to verify the inputs given by the users. It als
 
 """
         , sv = """
-The first Slackbot framework written in Python 3.6. It's designed to be interface-agnostic, so it also supports a REPL interface. 
+Det första Slackbot frameworket skrivet i Python 3.6. Det är designat för att vara interface agnostiskt, och har ett REPL interface.
 
-It uses Python's type system to implement a type-safe interface too! If you give it a command, you must specify the types of each argument it expects.
-It will then use those arguments to verify the inputs given by the users. It also lets you search for commands by their type!
+Det använder Pythons typsystem för att implementera ett typsäkert interface. Om du ger det ett komando, så måste du specificera typerna till varje 
+argument. 
+Argumenten används sendan för att verifiera de inputs användaren ger. Det går även att söka efter kommandon genom att ange typ.
 """
         , no = """
 The first Slackbot framework written in Python 3.6. It's designed to be interface-agnostic, so it also supports a REPL interface. 
